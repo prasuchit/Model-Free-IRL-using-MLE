@@ -14,7 +14,7 @@ def Qaveraging(mdp,trajInfo):
     threshold = 0.0001
     maxchange = 2*threshold
     with Pool(processes = 5) as pool:
-        while (count < 10000) and (maxchange > threshold):
+        while (count < 1000) and (maxchange > threshold):
             count += 1
             updateUnseenQvalues(mdp, unseen_sa)
             maxchange = (pool.apply_async(updateQ,(mdp,trajInfo))).get()
@@ -26,7 +26,7 @@ def Qaveraging(mdp,trajInfo):
     count = 0
     maxchange = 2*threshold
     with Pool(processes = 5) as pool:
-        while (count < 10000) and (maxchange > threshold):
+        while (count < 1000) and (maxchange > threshold):
             count += 1
             updateUnseenQgradients(mdp,unseen_sa)
             maxchange = (pool.apply_async(updategradQ,(mdp,trajInfo))).get()

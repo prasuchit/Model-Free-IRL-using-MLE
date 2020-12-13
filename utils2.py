@@ -42,7 +42,7 @@ def nesterovAccelGrad(mdp, trajs, opts, currWeight = 0, currGrad = 0, cache = []
     print("==== Nesterov Accel Gradient ====")
     oldMLE = 0
     error = np.inf
-    eps = 10**-4
+    eps = 0.1
     threshold = eps * (1 - mdp.discount)/mdp.discount
     i = 0
     prevGrad = np.copy(currGrad)

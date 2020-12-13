@@ -18,7 +18,7 @@ def setIRLParams(alg=None, restart=0, optimizer='Newton-CG', solverMethod= 'scip
     irlOpts.alpha = 1   # learning rate
 
     if irlOpts.optimMethod == 'gradDesc':
-        irlOpts.decay = .99
+        irlOpts.decay = 0.99
         irlOpts.MaxIter = 100
         irlOpts.stepsize = 1/irlOpts.MaxIter
 
@@ -33,7 +33,7 @@ def setIRLParams(alg=None, restart=0, optimizer='Newton-CG', solverMethod= 'scip
 
     if irlOpts.alg == 'MAP_BIRL' or irlOpts.alg == 'MMAP_BIRL':
         if irlOpts.llhType == 'BIRL':
-            irlOpts.eta = 3
+            irlOpts.eta = 0.01
 
     return irlOpts
 

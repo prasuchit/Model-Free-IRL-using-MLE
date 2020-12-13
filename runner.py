@@ -23,15 +23,15 @@ def main():
     llhName = 'BIRL'
     # priorName = 'Gaussian'
     priorName = 'Uniform'
-    # probName = 'highway'
-    probName = 'gridworld'
+    probName = 'highway'
+    # probName = 'gridworld'
     # optimMethod = 'gradDesc'
     optimMethod = 'nesterovGrad'
-    nTrajs = 1
-    nSteps = 5
+    nTrajs = 5
+    nSteps = 10
     problemSeed = 1
-    init_gridSize = 2
-    init_blockSize = 1
+    init_gridSize = 8
+    init_blockSize = 2
     init_nLanes = 2     # Highway problem
     init_nSpeeds = 2    # Highway problem
     init_noise = 0.3
@@ -99,9 +99,10 @@ def main():
 
             rewardDiff, valueDiff, policyDiff, piL, piE = utils2.computeResults(data, mdp, wL)
 
-            if policyDiff < 0.3:    # Learned behavior accuracy should be atleast < 30%
+            if policyDiff < 0.5:    # Learned behavior accuracy should be atleast < 30%
                 repeat = False
                 print("Learned weights: \n", wL)
+                numpy.savetxt("learned_weights.csv", a, delimiter=",")
                 t1 = time.time()
                 runtime = t1 - t0
                 print("Same number of actions between expert and learned pi: ",(piL.squeeze()==piE.squeeze()).sum(),"/",mdp.nStates)

@@ -6,28 +6,32 @@ import mdptoolbox, mdptoolbox.example
 from scipy import sparse
 from scipy.special import logsumexp
 np.seterr(divide='ignore', invalid='ignore')
+from multiprocessing import Pool
 
 def Qaveraging(mdp,trajInfo):
     unseen_sa = getUnseenSA(mdp, trajInfo)
-    nS = mdp.nStates
-    nA = mdp.nActions
-    eta = 0.05
     count = 0
     threshold = 0.0001
     maxchange = 2*threshold
-    while (count < 10000) and (maxchange > threshold):
-        count += 1
-        updateUnseenQvalues(mdp, unseen_sa)
-        maxchange = updateQ(mdp,trajInfo)
-    
+    with Pool(processes = 5) as pool:
+        while (count < 10000) and (maxchange > threshold):
+            count += 1
+            updateUnseenQvalues(mdp, unseen_sa)
+            maxchange = (pool.apply_async(updateQ,(mdp,trajInfo))).get()
+            # with Pool(processes = 5) as pool1:
+            # updateUnseenQvalues(mdp, unseen_sa)
+            # updateQ(mdp,trajInfo)
     print("Q update steps: ", count)
 
     count = 0
     maxchange = 2*threshold
-    while (count < 10000) and (maxchange > threshold):
-        count += 1
-        updateUnseenQgradients(mdp,unseen_sa)
-        maxchange = updategradQ(mdp,trajInfo)
+    with Pool(processes = 5) as pool:
+        while (count < 10000) and (maxchange > threshold):
+            count += 1
+            updateUnseenQgradients(mdp,unseen_sa)
+            maxchange = (pool.apply_async(updategradQ,(mdp,trajInfo))).get()
+            # updateUnseenQgradients(mdp, unseen_sa)
+            # updategradQ(mdp,trajInfo)
     print("Q grad update steps: ", count)
     return
 
@@ -48,7 +52,7 @@ def getUnseenSA(mdp,trajInfo):
     return sa_set
 
 def updateQ(mdp,trajInfo):
-    maxchange = -1
+    maxchange = 0
     nTrajs = trajInfo.nTrajs
     nSteps = trajInfo.nSteps 
     oldQvalue = 0

@@ -66,6 +66,7 @@ def generateTrajectory(mdp, problem):
         print(f'solve {mdp.name}\n')
         tic = time.time()  
         policy, value, _ , H = solver.piMDPToolbox(mdp)
+        np.savetxt("modified_trans_noise_value.csv",value,delimiter=',')
         toc = time.time()
         elapsedTime = toc - tic
         print('sample trajectory\n')

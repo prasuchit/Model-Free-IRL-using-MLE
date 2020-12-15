@@ -15,7 +15,7 @@ def sampleWeight(problem, nF, seed=None):
     
     np.random.seed(seed)
     w = np.zeros((nF, 1))
-    i = 1   # behavior setter
+    i = 2   # behavior setter
     if problem.name == 'gridworld':
         if i == 0:  # Random behaviour
             w = np.random.rand(nF, 1)
@@ -39,7 +39,7 @@ def sampleWeight(problem, nF, seed=None):
             w[-1] = 0.1         # high-speed
         else:
             w = np.random.rand(nF, 1)
-
+            # w = np.array([-1.59840727, 0.3994327, 0.71807136, 0.15155268, -0.01017073])
     else:
         print("Unknown problem name!!")
         exit(0)
